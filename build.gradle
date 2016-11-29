@@ -1,0 +1,35 @@
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 're.system.pls2cue.Main'
+    }
+}
+
+repositories {
+    jcenter()
+    maven {
+        url 'https://dl.bintray.com/ijabz/maven/'
+    }
+}
+
+dependencies {
+    compile 'org.slf4j:slf4j-log4j12:1.7.21'
+    compile 'net.jthink:jaudiotagger:2.2.5'
+    compile 'org.codehaus.groovy:groovy-all:2.4.7'
+    compile 'org.slf4j:slf4j-api:1.7.14'
+    compile group: 'com.googlecode.plist', name: 'dd-plist', version: '1.16'
+
+    testCompile 'junit:junit:4.12'
+}
