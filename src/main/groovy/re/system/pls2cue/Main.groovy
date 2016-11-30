@@ -17,6 +17,7 @@ class Main {
     static String ITUNES_LIBRARY_PATH = "${System.properties['user.home']}/Music/iTunes/iTunes Library.xml"
     static NSDictionary library
     static String cueSheetText = ''
+    static String txtSheetText = ''
     static String savePath = "${System.properties['user.home']}/Desktop"
 
     static void main(String[] args) {
@@ -34,8 +35,12 @@ class Main {
             }
         }
 
-        File cue = new File(savePath)
+        File cue = new File(savePath + ".cue")
         cue << cueSheetText
+
+        File txt = new File(savePath + ".txt")
+        txt << txtSheetText
+
     }
 
     static processPlaylist(playlist) {
@@ -48,7 +53,7 @@ class Main {
         cueSheetText += "TITLE \"${playlist.Name}\"\n"
         cueSheetText += "FILE \"${playlist.Name}.mp3\" MP3\n"
 
-        savePath += "/${playlist.Name.content.replace(':', '').replace('/', '-')}.cue"
+        savePath += "/${playlist.Name.content.replace(':', '').replace('/', '-')}"
 
         playlist.'Playlist Items'.array.eachWithIndex { item,i  ->
             processTrack(item.'Track ID', i)
@@ -65,6 +70,8 @@ class Main {
         cueSheetText += "    TITLE \"${tag.getFirst(ID3v24Frames.FRAME_ID_TITLE)}\"\n"
         cueSheetText += "    PERFORMER \"${tag.getFirst(ID3v24Frames.FRAME_ID_ARTIST)}\"\n"
         cueSheetText += "    INDEX 01 00:00:00\n"
+
+        txtSheetText += "00:00 ${tag.getFirst(ID3v24Frames.FRAME_ID_ARTIST)} - ${tag.getFirst(ID3v24Frames.FRAME_ID_TITLE)}\n"
     }
 
 }
